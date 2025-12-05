@@ -18,17 +18,6 @@
 #define SEM_CHILD2_NAME "/sem_child2"
 #define SEM_PARENT_NAME "/sem_parent"
 
-// УДАЛИТЕ ЭТУ ФУНКЦИЮ ОТСЮДА - она уже есть в string_to_uppercase.c
-/*
-void string_to_uppercase(char *s) {
-    for (size_t i = 0; s[i] != '\0'; i++) {
-        if (s[i] >= 'a' && s[i] <= 'z') {
-            s[i] = s[i] - 'a' + 'A';
-        }
-    }
-}
-*/
-
 int main() {
     // Открываем разделяемую память
     int shm_fd = shm_open(SHM_NAME, O_RDWR, 0666);

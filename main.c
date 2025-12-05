@@ -87,7 +87,7 @@ int main() {
 
     // Родительский процесс
     printf("Программа для обработки строк (верхний регистр + удаление задвоенных пробелов)\n");
-    printf("Введите строки для обработки (Ctrl+D для завершения):\n");
+    printf("Введите строки для обработки:\n");
 
     char input_buffer[SHM_SIZE];
     
@@ -97,7 +97,7 @@ int main() {
         
         // Чтение строки от пользователя
         if (fgets(input_buffer, SHM_SIZE, stdin) == NULL) {
-            // Сигнал завершения (Ctrl+D)
+            // Сигнал завершения
             shared_mem->exit_flag = 1;
             sem_post(sem_child1);  // Будим child1 для завершения
             break;
@@ -105,13 +105,6 @@ int main() {
 
         // Убираем символ новой строки
         input_buffer[strcspn(input_buffer, "\n")] = '\0';
-
-        // Проверяем команду выхода
-        if (strcmp(input_buffer, "quit") == 0) {
-            shared_mem->exit_flag = 1;
-            sem_post(sem_child1);  // Будим child1 для завершения
-            break;
-        }
 
         // Копируем данные в разделяемую память
         strncpy(shared_mem->buffer, input_buffer, SHM_SIZE - 1);
