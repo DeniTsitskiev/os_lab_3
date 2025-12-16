@@ -8,6 +8,7 @@
 #include <semaphore.h>
 #include <fcntl.h>
 #include <sys/stat.h>
+#include "../include/del_space.h"
 
 #define SHM_SIZE 1024
 #define SHM_NAME "/shm_lab3"
@@ -21,25 +22,6 @@ typedef struct {
     int exit_flag;
 } shared_data;
 
-void remove_double_spaces(char *s) {
-    char new_str[SHM_SIZE];
-    int j = 0;
-    int previous_is_space = 0;
-
-    for (size_t i = 0; s[i] != '\0' && j < SHM_SIZE - 1; i++) {
-        if (s[i] == ' ') {
-            if (!previous_is_space) {
-                new_str[j++] = s[i];
-                previous_is_space = 1;
-            }
-        } else {
-            new_str[j++] = s[i];
-            previous_is_space = 0;
-        }
-    }
-    new_str[j] = '\0';
-    strcpy(s, new_str);
-}
 
 int main() {
     // Открываем разделяемую память
@@ -76,7 +58,7 @@ int main() {
         }
 
         // Обрабатываем строку (удаление задвоенных пробелов)
-        remove_double_spaces(shared_mem->buffer);
+        del_space(shared_mem->buffer);
 
         // Сигнализируем родителю, что обработка завершена
         sem_post(sem_parent);
